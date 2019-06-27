@@ -1,0 +1,20 @@
+webapps:
+  - 10.0.2.5
+
+splunk:
+  host: localhost
+  port: 8089
+
+mail:
+  port: 465
+  smtp_server: smtp.gmail.com
+  sender_email: webtentacle@gmail.com
+  message: >-
+    This message is sent from automation tool WeBTenTacLE.
+    Please do not answer to this email. 
+    To unsubscribe/subscripte contact security team.
+  subject: webtentacle notifier
+  
+files_output:
+  folder: "/tmp"
+  template: Template('$url-$timestamp')

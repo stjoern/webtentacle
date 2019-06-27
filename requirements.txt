@@ -1,0 +1,5 @@
+yaml
+smtplib
+ssl
+splunklib
+urllib

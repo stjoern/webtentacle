@@ -1,5 +1,2 @@
-yaml
-smtplib
-ssl
+pyyaml
 splunklib
-urllib

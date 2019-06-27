@@ -1,0 +1,28 @@
+version: '3'
+services:
+    web: 
+      build: .
+  
+ # vsplunk: 
+ #   image: busybox 
+ #   volumes: 
+ #     - vsplunk:/opt/splunk/etc 
+ #     - vsplunk:/opt/splunk/var 
+ # splunkenterprise: 
+ #   #build: . 
+ #   hostname: splunkenterprise 
+ #   image: splunk/splunk:6.5.2 
+ #   environment: 
+ #     SPLUNK_START_ARGS: --accept-license
+ #     SPLUNK_ENABLE_LISTEN: 9997 
+ #     SPLUNK_ADD: tcp 1514 
+ #   volumes: 
+ #     - vsplunk:/opt/splunk/etc 
+ #     - vsplunk:/opt/splunk/var  
+ #   ports: 
+ #     - "8000:8000" 
+ #     - "9997:9997" 
+ #     - "8088:8088" 
+ #     - "1514:1514"
+#volumes:
+#  vsplunk:

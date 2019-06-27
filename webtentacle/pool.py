@@ -5,8 +5,9 @@ from datetime import datetime
 import subprocess
 from subprocess import Popen, PIPE
 import os
-import concurrent
+import concurrent.futures
 from functools import partial
+import logging
 
 def run_nikto(file_output, ref_url, ):
     """
@@ -28,7 +29,6 @@ def run_nikto(file_output, ref_url, ):
         ts = datetime.now().timestamp()
         substituted = template.substitute(url=host, timestamp=datetime.utcfromtimestamp(ts).strftime('%Y%m%d_%H:%M:%S'))
         substituted += '.txt'
-        print(substituted)
         return substituted, ref_url
 
     file_name, url = get_file_output(ref_url, file_output)
@@ -51,8 +51,8 @@ def concurrent_pool(urls, file_output):
         for fut in concurrent.futures.as_completed(fs, timeout=None):
             fn, rv = fut.result()
             if rv == 0:
-                print('finished "{}"'.format(fn))
+                logging.info('finished "{}"'.format(fn))
             elif rv < 0:
-                print('warning')
+                logging.warning('problem with file "{}".format(fn)')
             else:
-                print('error')
+                logging.error(errmsg.format(fn, rv))

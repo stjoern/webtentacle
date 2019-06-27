@@ -1,4 +1,5 @@
 import yaml
+import logging
 
 class SingletonMetaClass(type):
     def __init__(cls, name, bases, dict):
@@ -35,3 +36,10 @@ class LoadConfig(object):
 
     def get_file_output(self):
         return self.settings.get("files_output",None)
+    
+    def set_logging(self):
+        log = self.settings.get("logging")
+        logging.basicConfig(filename="{}/{}".format(log.get("folder"), log.get("file")), 
+                            filemode='w+', 
+                            format='%(process)d-%(asctime)s-%(name)s-%(levelname)s-%(message)s', 
+                            level=eval("logging.{}".format((log.get("mode")).upper())))

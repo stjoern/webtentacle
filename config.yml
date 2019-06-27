@@ -16,5 +16,10 @@ mail:
   subject: webtentacle notifier
   
 files_output:
-  folder: "/tmp"
+  folder: "/code/tmp"
   template: Template('$url-$timestamp')
+
+logging:
+  folder: "/code/tmp"
+  file: webtentacle.log
+  mode: debug

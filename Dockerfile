@@ -36,6 +36,8 @@ ENV PERL_CPANM_OPT --verbose --mirror https://cpan.metacpan.org --mirror-only
 RUN cpanm Digest::SHA Module::Signature && rm -rf ~/.cpanm
 ENV PERL_CPANM_OPT $PERL_CPANM_OPT --verify
 
+RUN apk add libressl perl perl-net-ssleay perl-crypt-ssleay
+
 RUN apk add --no-cache --virtual .build-deps g++ python3-dev libffi-dev openssl-dev && \
     apk add --no-cache --update python3 && \
     pip3 install --upgrade pip setuptools

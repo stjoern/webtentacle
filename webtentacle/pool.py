@@ -8,6 +8,7 @@ import os
 import concurrent.futures
 from functools import partial
 import logging
+import sys
 
 def run_nikto(file_output, ref_url, ):
     """
@@ -34,13 +35,17 @@ def run_nikto(file_output, ref_url, ):
     file_name, url = get_file_output(ref_url, file_output)
     file_output_path = '{}/{}'.format(file_output.get('folder','/tmp'), file_name)
 
-    args = ["nikto.pl", "-h", url, "-Tuning", 2]#,'-Plugins "apache_expect"']#, '-Format xml']
-   # p = Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
-   # output, err = p.communicate()
-   # exitcode = p.returncode
-    f = open(file_output_path, "w")
-    rv = subprocess.call(args, stdout=f, stderr=PIPE, shell=False)
-    return file_name, rv
+    args = ["nikto.pl", "-h", url, "-Tuning", "2", "-o", file_output_path]#,'-Plugins "apache_expect"']#, '-Format xml']
+    p = Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    output, err = p.communicate()
+    exitcode = p.returncode
+    print(output)
+    return exitcode, err
+    #f = open(file_output_path, "wb")
+    #with open("/code/tmp/test.txt","wb") as out, open("stderr.txt","wb") as err:
+    #    rv = subprocess.call(" ".join(args), stdout=out, stderr=err, shell=True, env=dict(os.environ))
+
+    #    return file_name, rv
    # return exitcode, output, err
 
 def concurrent_pool(urls, file_output):

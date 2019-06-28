@@ -1,5 +1,5 @@
 webapps:
-  - nmap.org
+  - 10.0.2.5
 
 splunk:
   host: localhost

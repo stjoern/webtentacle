@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from webtentacle import config
 from webtentacle import pool
 import os

@@ -34,7 +34,7 @@ def run_nikto(file_output, ref_url, ):
     file_name, url = get_file_output(ref_url, file_output)
     file_output_path = '{}/{}'.format(file_output.get('folder','/tmp'), file_name)
 
-    args = ["/usr/bin/nikto", "-h", url]#,'-Plugins "apache_expect"']#, '-Format xml']
+    args = ["nikto.pl", "-h", url]#,'-Plugins "apache_expect"']#, '-Format xml']
    # p = Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
    # output, err = p.communicate()
    # exitcode = p.returncode

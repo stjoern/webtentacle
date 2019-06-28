@@ -4,7 +4,6 @@ RUN mkdir -p /usr/src/perl
 WORKDIR /usr/src/perl
 
 RUN apk update && apk upgrade && apk add curl tar make build-base wget gnupg
-RUN mkdir -p /usr/src/perl
 
 ## from perl; `true make test_harness` because 3 tests fail
 ## some flags from http://git.alpinelinux.org/cgit/aports/tree/main/perl/APKBUILD?id=19b23f225d6e4f25330e13144c7bf6c01e624656
@@ -37,20 +36,34 @@ ENV PERL_CPANM_OPT --verbose --mirror https://cpan.metacpan.org --mirror-only
 RUN cpanm Digest::SHA Module::Signature && rm -rf ~/.cpanm
 ENV PERL_CPANM_OPT $PERL_CPANM_OPT --verify
 
-RUN mkdir -p /usr/src/python3
-WORKDIR /usr/src/python3
-
 RUN apk add --no-cache --virtual .build-deps g++ python3-dev libffi-dev openssl-dev && \
     apk add --no-cache --update python3 && \
     pip3 install --upgrade pip setuptools
 
-COPY requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN apk add git
 
-ENV PATH="/usr/src/perl:/usr/src/python3/:"
-WORKDIR /
+WORKDIR /usr/src
+RUN git clone https://github.com/sullo/nikto.git Nikto2
+
+ENV PATH="/usr/src/Nikto2/program:$PATH"
+RUN echo "$PATH"
+RUN echo "$(which perl)"
+RUN echo "$(which python3)"
+RUN echo "$(which git)"
+RUN echo "$(which nikto.pl)"
+
+RUN mkdir -p /code/tmp
+WORKDIR /code
 COPY . .
 
-RUN git clone https://github.com/sullo/nikto.git Nikto2
-RUN mkdir -p /code/tmp
-CMD [ "python3", "./main.py" ]
+#RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
+
+# start CRON (for testing purpose every 5 minutes)
+#RUN echo '5 * * * * cd /code && python3 ./main.py' > /etc/crontabs/root
+#CMD ['crond','-l 2','-f']
+RUN touch /var/log/cron.log
+RUN chmod 755 ./entry.sh ./main.py
+RUN /usr/bin/crontab ./crontab.txt
+CMD ["./entry.sh"]
+CMD tail -f /var/log/cron.log

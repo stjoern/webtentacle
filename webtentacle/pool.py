@@ -1,5 +1,10 @@
 from string import Template
-from urllib.parse import urlsplit
+import sys
+#print(sys.version_info)
+#if sys.version_info > (3, 0):
+#    from urllib.parse import urlsplit
+#else:
+from urlparse import urlparse
 import re
 from datetime import datetime
 import subprocess
@@ -24,7 +29,7 @@ def run_nikto(file_output, ref_url, ):
     def get_file_output(ref_url, file_output):
         if not re.match(r'http(s?)\:',ref_url):
             ref_url = 'http://' + ref_url
-        parsed = urlsplit(ref_url)
+        parsed = urlparse(ref_url)
         host = parsed.netloc
         template = eval(file_output.get('template',''))
         ts = datetime.now().timestamp()

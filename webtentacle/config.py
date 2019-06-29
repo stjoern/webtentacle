@@ -43,3 +43,6 @@ class LoadConfig(object):
                             filemode='w+', 
                             format='%(process)d-%(asctime)s-%(name)s-%(levelname)s-%(message)s', 
                             level=eval("logging.{}".format((log.get("mode")).upper())))
+        
+    def get_splunk(self):
+        return self.settings.get("splunk")

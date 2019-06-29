@@ -4,6 +4,8 @@ webapps:
 splunk:
   host: localhost
   port: 8089
+  username: admin
+  password: changeme
 
 mail:
   port: 465

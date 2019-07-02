@@ -18,6 +18,7 @@ RUN apk add git
 WORKDIR /usr/src
 RUN git clone https://github.com/sullo/nikto.git Nikto2
 
+RUN ln -s /usr/src/Nikto2/program/nikto.pl /usr/src/Nikto2/program/nikto
 ENV PATH="/usr/src/Nikto2/program:$PATH"
 RUN echo "$PATH"
 RUN echo "$(which perl)"

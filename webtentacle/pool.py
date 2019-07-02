@@ -1,10 +1,6 @@
 from string import Template
 import sys
-#print(sys.version_info)
-#if sys.version_info > (3, 0):
-#    from urllib.parse import urlsplit
-#else:
-from urlparse import urlparse
+from urllib.parse import urlsplit
 import re
 from datetime import datetime
 import subprocess
@@ -29,7 +25,7 @@ def run_nikto(file_output, ref_url, ):
     def get_file_output(ref_url, file_output):
         if not re.match(r'http(s?)\:',ref_url):
             ref_url = 'http://' + ref_url
-        parsed = urlparse(ref_url)
+        parsed = urlsplit(ref_url)
         host = parsed.netloc
         template = eval(file_output.get('template',''))
         ts = datetime.now().timestamp()
@@ -40,18 +36,12 @@ def run_nikto(file_output, ref_url, ):
     file_name, url = get_file_output(ref_url, file_output)
     file_output_path = '{}/{}'.format(file_output.get('folder','/tmp'), file_name)
 
-    args = ["nikto.pl", "-h", url, "-Tuning", "2", "-o", file_output_path]#,'-Plugins "apache_expect"']#, '-Format xml']
+    args = ["nikto", "-h", url, "-Tuning", "2", "-o", file_output_path]#,'-Plugins "apache_expect"']#, '-Format xml']
     p = Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate()
     exitcode = p.returncode
     print(output)
-    return exitcode, err
-    #f = open(file_output_path, "wb")
-    #with open("/code/tmp/test.txt","wb") as out, open("stderr.txt","wb") as err:
-    #    rv = subprocess.call(" ".join(args), stdout=out, stderr=err, shell=True, env=dict(os.environ))
-
-    #    return file_name, rv
-   # return exitcode, output, err
+    return err, exitcode
 
 def concurrent_pool(urls, file_output):
     starter = partial(run_nikto, file_output)
@@ -63,6 +53,6 @@ def concurrent_pool(urls, file_output):
             if rv == 0:
                 logging.info('finished "{}"'.format(fn))
             elif rv < 0:
-                logging.warning('problem with file "{}".format(fn)')
+                logging.warning('problem with file "{}"'.format(fn))
             else:
                 logging.error(errmsg.format(fn, rv))

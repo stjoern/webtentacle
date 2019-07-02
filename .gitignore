@@ -58,5 +58,5 @@ venv/
 ENV/
 
 # visual studio code
-*.code-workspace
+webtentacle-workspace.code-workspace
 .vscode/

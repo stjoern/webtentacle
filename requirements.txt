@@ -1,4 +1,3 @@
 pyyaml
 splunklib
 splunk-sdk
-urllib

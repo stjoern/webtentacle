@@ -11,7 +11,7 @@ from functools import partial
 import logging
 import sys
 
-def run_nikto(file_output, ref_url, ):
+def run_nikto(file_output, ref_url, nikto):
     """
     use nikto to start testing web headers
     todo: add more arguments
@@ -35,16 +35,17 @@ def run_nikto(file_output, ref_url, ):
 
     file_name, url = get_file_output(ref_url, file_output)
     file_output_path = '{}/{}'.format(file_output.get('folder','/tmp'), file_name)
+    useragent = nikto.get("useragent")
 
-    args = ["nikto", "-h", url, "-Tuning", "2", "-o", file_output_path]#,'-Plugins "apache_expect"']#, '-Format xml']
+    args = ["nikto", "-useragent", useragent, "-h", url, "-Tuning", "2", "-o", file_output_path]
     p = Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate()
     exitcode = p.returncode
     print(output)
     return err, exitcode
 
-def concurrent_pool(urls, file_output):
-    starter = partial(run_nikto, file_output)
+def concurrent_pool(urls, file_output, nikto):
+    starter = partial(run_nikto, file_output, nikto)
     errmsg = 'nikto has failed to run {} web headers testing, return code {}'
     with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count()) as tp:
         fs = [tp.submit(starter, t) for t in urls]

@@ -30,6 +30,9 @@ class LoadConfig(object):
     def get_urls(self):
         return self.settings.get('webapps',[])
 
+    def get_nikto(self):
+        return self.settings.get('nikto',{})
+    
     def url_generator(self):
         for url in self.settings.get('webapps',[]):
             yield url

@@ -10,6 +10,23 @@
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "splunk SDK search",
+            "type": "python",
+            "request":"launch",
+            "program": "/root/Documents/GitRepo/splunk-sdk-python/examples/search.py",
+            "console": "internalConsole",
+            "args": [
+                "'search index-_internal | head 10 | stats count'"
+            ]
+        },
+        {
+            "name": "splunk in webtentacle",
+            "type": "python",
+            "request":"launch",
+            "program": "${workspaceFolder}/webtentacle/splunk.py",
+            "console": "internalConsole",
         }
     ]
 }

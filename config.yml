@@ -25,3 +25,6 @@ logging:
   folder: "/code/tmp"
   file: webtentacle.log
   mode: debug
+
+nikto:
+  useragent: webtentacle

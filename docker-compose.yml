@@ -25,4 +25,3 @@ services:
       - "9997:9997"
       - "8088:8088"
       - "1514:1514"
-insert employee  department    restart: always

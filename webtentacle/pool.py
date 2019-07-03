@@ -11,7 +11,7 @@ from functools import partial
 import logging
 import sys
 
-def run_nikto(file_output, ref_url, nikto):
+def run_nikto(file_output, nikto, ref_url):
     """
     use nikto to start testing web headers
     todo: add more arguments
@@ -22,7 +22,7 @@ def run_nikto(file_output, ref_url, nikto):
     Returns:
         (filename, return value)
     """
-    def get_file_output(ref_url, file_output):
+    def get_file_output( ref_url, file_output, nikto):
         if not re.match(r'http(s?)\:',ref_url):
             ref_url = 'http://' + ref_url
         parsed = urlsplit(ref_url)
@@ -33,7 +33,7 @@ def run_nikto(file_output, ref_url, nikto):
         substituted += '.txt'
         return substituted, ref_url
 
-    file_name, url = get_file_output(ref_url, file_output)
+    file_name, url = get_file_output(ref_url, file_output, nikto)
     file_output_path = '{}/{}'.format(file_output.get('folder','/tmp'), file_name)
     useragent = nikto.get("useragent")
 

@@ -1,1 +1,1 @@
-__all__ = ['config','pool','splunk']
+__all__ = ['config','pool','splunk','splunk_output']

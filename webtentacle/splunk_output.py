@@ -9,8 +9,7 @@ def write_data_to_splunk():
     host = socket.gethostname()
     mysocket = myindex.attach(sourcetype='myfile',host=socket.gethostname())
     settings = LoadConfig('config.yml')
-    mm = glob.glob("{}/*.txt".format(settings.get_file_output()))
-    for item in glob.glob("{}/*.txt".format(settings.get_file_output().get("folder"))):
+    for item in glob.glob("{}/*.txt".format(settings.get_file_output().get("folder")))[:]:
         file_data = ''
         with open(item, 'r') as lines:
             for line in lines:
@@ -19,6 +18,6 @@ def write_data_to_splunk():
                 file_data += line      
                 file_data += '\r\n'
             mysocket.send(str.encode(file_data))
+        os.remove(item)
     mysocket.close()
     
-    #os.remove(item)

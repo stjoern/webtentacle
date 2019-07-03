@@ -13,7 +13,27 @@ global service
 settings = config.LoadConfig('./config.yml')
 conf = settings.get_splunk()
 
-service = client.connect(host=conf.get('host'),port=conf.get('port'),username=conf.get('username'),password=conf.get('password'),cookie=0)
+
+
+service = client.connect(host=socket.gethostname(),port=conf.get('port'),username='admin',password='changemeagain',cookie=0)
+
+def get_users():
+    # get collection of users
+    return service.users
+
+def create_user(username, password):
+    user = service.users.create(username=username, password=password, roles=['power','user','admin'])
+    return user
+
+
+#create_user('webtentacle','letmeinplease')
+#service.logout()
+
+#service = client.connect(host=socket.gethostname(),
+#                         port=conf.get('port'),
+#                         username='webtentacle',
+#                         password='letmeinplease',
+#                         cookie=0)
 
 
 def echo_installed_apps():

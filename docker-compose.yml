@@ -1,4 +1,4 @@
-version: '3'
+version: '3.6'
 
 volumes:
   opt-splunk-etc:
@@ -8,15 +8,17 @@ services:
   #web:
   #  build: .
   splunkenterprise:
-    #build: .
     hostname: splunkenterprise
     image: splunk/splunk:7.2.0
+    restart: always
+    user: root
     environment:
-      - SPLUNK_START_ARGS=--accept-license --no-prompt --answer-yes
+      - SPLUNK_START_ARGS=--accept-license --answer-yes --no-prompt --seed-passwd ${SPLUNK_INITIAL_PASSWORD}
       - SPLUNK_ENABLE_LISTEN=9997
       - SPLUNK_ADD=tcp 1514
-      - SPLUNK_USERNAME=admin
-      - SPLUNK_PASSWORD=password
+      - SPLUNK_UPGRADE=True
+      - SPLUNK_PASSWORD=${SPLUNK_INITIAL_PASSWORD}
+      - DEBUG=1
     volumes:
       - opt-splunk-etc:/opt/splunk/etc
       - opt-splunk-var:/opt/splunk/var

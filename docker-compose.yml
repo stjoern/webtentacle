@@ -5,8 +5,15 @@ volumes:
   opt-splunk-var:
 
 services:
-  #web:
-  #  build: .
+  web:
+    build: .
+    environment: 
+      - SPLUNK_WEBTENTACLE_PASSWORD=${SPLUNK_PASSWORD}
+      - SPLUNK_WEBTENTACLE_USER=${SPLUNK_USERNAME}
+      - MOTHER_HOSTNAME=${MOTHER_HOSTNAME}
+      - SPLUNK_INITIAL_PASSWORD=${SPLUNK_INITIAL_PASSWORD}
+    links:
+      - splunkenterprise
   splunkenterprise:
     hostname: splunkenterprise
     image: splunk/splunk:7.2.0

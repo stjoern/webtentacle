@@ -50,7 +50,7 @@ coverage.xml
 .python-version
 
 # dotenv
-.env
+#.env
 
 # virtualenv
 .venv/

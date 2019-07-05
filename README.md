@@ -6,14 +6,14 @@ you need to install Docker to be able to run the application
 - MAC: [Docker Hub](https://hub.docker.com/editions/community/docker-ce-desktop-mac)
 - NIX: 
     - CentOS 
-        ```bash
+        ```console
         sudo yum install -y yum-utils device-mapper-persistent-data lvm2
         sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
         sudo yum install docker-ce docker-ce-cli containerd.io
         sudo systemctl start docker
         ```
     - Debian
-        ```bash
+        ```console
         sudo apt-get update
         sudo apt-get install apt-transport-https ca-certificates curl gnupg2 \
         software-properties-common
@@ -35,11 +35,11 @@ webapps:
   you can add here FQDNs hosting a web application. 
 ## Running the application
 Within the directory webtentacle start:
-```sh
+```console
 ./docker-build-run.sh
 ```
 or
-```bash
+```console
 docker-compose up
 ```
 Currently the cron is set for running every 5 minutes up, you can change this in a file _entry.sh_

@@ -43,7 +43,7 @@ def run():
         # user authenticated
         print("job webtentacle user authenticated")
         
-        for item in glob.glob("{}/*.{}".format(file_output.get('folder'), file_output.get('extension.used'))):
+        for item in glob.glob("{}/*.{}".format(file_output.get('folder'), file_output.get('extension_used'))):
             xmlparser = Xml2Json(filepath=item, url="todo")
             xmlparser.sanitize_xml()
             

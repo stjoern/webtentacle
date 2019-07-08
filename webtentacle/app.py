@@ -18,7 +18,7 @@ def run():
     urls = settings.get_urls()
     nikto = settings.get_nikto()
     file_output = settings.get_file_output()
-    pool.concurrent_pool(urls, file_output, nikto)
+   # pool.concurrent_pool(urls, file_output, nikto)
     print("job nikto finished")
     
     #create user

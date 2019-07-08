@@ -38,9 +38,9 @@ class Xml2Json(object):
             # delete first two lines
             del data[0:1+1]
             # replace now the new first line with one root <webtentacle>
-            data[0] = '<webtentacle>\n'
+            data[0] = '<event>\n'
             # replace the last line with end tag root </webtentacle>
-            data[-1] = '</webtentacle>'
+            data[-1] = '</event>'
             if len(data) < 1:
                 logging.error('the xml output file is empty for scanned {} and file {}'.format(self.url, path.basename(self.file)))
                 raise ValueError('Error in sanitizing xml file result') 

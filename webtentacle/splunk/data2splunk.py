@@ -9,7 +9,7 @@ import shutil
 from webtentacle.splunk import initialize
 
 class Data2Splunk(object):
-    def __init__(self, index='main', host=None, source=None, sourcetype=None, backup=0, delete_after=1):
+    def __init__(self, index='main', host=None, source='webtentacle', sourcetype='.json', backup=0, delete_after=1):
         self.index = index
         self.host = socket.gethostname() if not host else host
         self.source = source

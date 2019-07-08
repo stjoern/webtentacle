@@ -44,11 +44,14 @@ def run():
         print("job webtentacle user authenticated")
         
         for item in glob.glob("{}/*.{}".format(file_output.get('folder'), file_output.get('extension_used'))):
-            xmlparser = Xml2Json(filepath=item, url="todo")
+            base = os.path.basename(item)
+            fileoutput, file_extension = os.path.splitext(base)
+            xmloutput = '{}{}{}'.format(fileoutput,'-sanitized',file_extension)
+            xmlparser = Xml2Json(filepath=item, url="todo", xmloutput=xmloutput)
             xmlparser.sanitize_xml()
             
         dump = Data2Splunk(host=socket.gethostname(), source='webtentacle', sourcetype="_json", backup=0, delete_after=0)
-        dump.bulk(directory=file_output.get("folder"), extension=file_output.get('extension_used'))
+        dump.bulk(directory=file_output.get("folder"), extension='json')
         print("job splunk dumping data finished")
     except Exception as exc:
         logging.error("Error occurred, error: {}".format(str(exc)))

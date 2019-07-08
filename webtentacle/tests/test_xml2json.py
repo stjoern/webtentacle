@@ -14,5 +14,6 @@ class TestXml2json(unittest.TestCase):
         except Exception as exception:
             self.fail("sanitize_xml() raised Exception unexpectedly!")
             
+            
 if __name__ == '__main__':
     unittest.main()

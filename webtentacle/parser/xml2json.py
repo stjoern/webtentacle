@@ -3,6 +3,8 @@ from os import path, rename
 import xmltodict
 import json
 import pickle
+import glob
+import os
 
 class Xml2Json(object):
     def __init__(self, filepath, url, xmloutput=None):
@@ -11,6 +13,7 @@ class Xml2Json(object):
         self.url = url
         self.xmloutput_file = xmloutput
         self.dir = Xml2Json.get_absolute_path_dir(filepath)
+        self.__file = None
     
     @staticmethod
     def get_absolute_path_dir(relative_filepath):
@@ -20,6 +23,7 @@ class Xml2Json(object):
     @staticmethod
     def file_exist(filepath):
         return True if path.exists(filepath) else False
+
     
     #@TODO: split sanitize and file writer
     
@@ -63,3 +67,6 @@ class Xml2Json(object):
         else:
             logging.error("the file {} doesn't exist.".format(self.file))
             raise ValueError('No result file for {}'.format(self.url))
+        
+
+        

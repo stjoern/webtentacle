@@ -22,7 +22,7 @@ def run_nikto(file_output, nikto, ref_url):
     Returns:
         (filename, return value)
     """
-    def get_file_output( ref_url, file_output, nikto):
+    def get_file_output( ref_url, file_output, nikto, extension):
         if not re.match(r'http(s?)\:',ref_url):
             ref_url = 'http://' + ref_url
         parsed = urlsplit(ref_url)
@@ -30,13 +30,14 @@ def run_nikto(file_output, nikto, ref_url):
         template = eval(file_output.get('template',''))
         ts = datetime.now().timestamp()
         substituted = template.substitute(url=host, timestamp=datetime.utcfromtimestamp(ts).strftime('%Y%m%d_%H:%M:%S'))
-        substituted += '.txt'
+        substituted += '.{}'.format(extension)
         return substituted, ref_url
 
-    file_name, url = get_file_output(ref_url, file_output, nikto)
+    extension = file_output.get("extension_used","xml")
+    file_name, url = get_file_output(ref_url, file_output, nikto, extension)
     file_output_path = '{}/{}'.format(file_output.get('folder','/tmp'), file_name)
     useragent = nikto.get("useragent")
-    extension = file_output.get("extension_used","xml")
+    
 
     args = ["nikto", "-useragent", useragent, "-h", url, "-Tuning", "2", "-Format", extension, "-o", file_output_path]
     p = Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE)

@@ -1,0 +1,5 @@
+pyyaml
+splunklib
+splunk-sdk
+xmltodict
+unittest

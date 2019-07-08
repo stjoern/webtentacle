@@ -1,11 +1,9 @@
 webapps:
-  - 10.0.2.5
+  - 10.0.2.8
 
 splunk:
   host: localhost
   port: 8089
-  username: admin
-  password: password
 
 mail:
   port: 465
@@ -20,6 +18,10 @@ mail:
 files_output:
   folder: "/code/tmp"
   template: Template('$url-$timestamp')
+  extensions: 
+    - txt
+    - xml
+  extension_used: xml
 
 logging:
   folder: "/code/tmp"

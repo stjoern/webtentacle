@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<!DOCTYPE niktoscan SYSTEM "/var/lib/nikto/docs/nikto.dtd">
+<niktoscan>
+<niktoscan hoststest="0" options="-h 10.0.2.8 -useragent test -Tuning 2 -o xml test.xml" version="2.1.6" scanstart="Sun Jul  7 12:25:48 2019" scanend="Thu Jan  1 01:00:00 1970" scanelapsed=" seconds" nxmlversion="1.2">
+
+<scandetails targetip="10.0.2.8" targethostname="10.0.2.8" targetport="80" targetbanner="Apache/2.2.16 (Debian)" starttime="2019-07-07 12:25:49" sitename="http://10.0.2.8:80/" siteip="http://10.0.2.8:80/" hostheader="10.0.2.8" errors="0" checks="646">
+
+
+<item id="999986" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[Retrieved x-powered-by header: PHP/5.3.3-7+squeeze15]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/]]></iplink>
+</item>
+
+<item id="999957" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[The anti-clickjacking X-Frame-Options header is not present.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/]]></iplink>
+</item>
+
+<item id="999101" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[X-XSS-Protection header has been set to disable XSS Protection. There is unlikely to be a good reason for this.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/]]></iplink>
+</item>
+
+<item id="999103" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/]]></iplink>
+</item>
+
+<item id="999984" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[Server may leak inodes via ETags, header found with file /favicon.ico, inode: 3372, size: 14634, mtime: Fri Mar 22 08:32:51 2013]]></description>
+<uri><![CDATA[/favicon.ico]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/favicon.ico]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/favicon.ico]]></iplink>
+</item>
+
+<item id="600050" osvdbid="0" osvdblink="http://osvdb.org/0" method="HEAD">
+<description><![CDATA[Apache/2.2.16 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL for the 2.x branch.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/]]></iplink>
+</item>
+
+<item id="999100" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[Uncommon header 'tcn' found, with contents: list]]></description>
+<uri><![CDATA[/index]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/index]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/index]]></iplink>
+</item>
+
+<item id="999965" osvdbid="0" osvdblink="http://osvdb.org/0" method="GET">
+<description><![CDATA[Apache mod_negotiation is enabled with MultiViews, which allows attackers to easily brute force file names. See http://www.wisec.it/sectou.php?id=4698ebdc59d15. The following alternatives for 'index' were found: index.php]]></description>
+<uri><![CDATA[/index]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/index]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/index]]></iplink>
+</item>
+
+<item id="999967" osvdbid="0" osvdblink="http://osvdb.org/0" method="DCYXIYLZ">
+<description><![CDATA[Web Server returns a valid response with junk HTTP methods, this may cause false positives.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/]]></iplink>
+</item>
+
+<item id="750500" osvdbid="3268" osvdblink="http://osvdb.org/3268" method="GET">
+<description><![CDATA[/icons/: Directory indexing found.]]></description>
+<uri><![CDATA[/icons/]]></uri>
+<namelink><![CDATA[http://10.0.2.8:80/icons/]]></namelink>
+<iplink><![CDATA[http://10.0.2.8:80/icons/]]></iplink>
+</item>
+
+<statistics elapsed="2" itemsfound="10" itemstested="646" endtime="2019-07-07 12:25:51" />
+</scandetails>
+
+</niktoscan>
+
+
+</niktoscan>

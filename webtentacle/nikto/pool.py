@@ -36,8 +36,9 @@ def run_nikto(file_output, nikto, ref_url):
     file_name, url = get_file_output(ref_url, file_output, nikto)
     file_output_path = '{}/{}'.format(file_output.get('folder','/tmp'), file_name)
     useragent = nikto.get("useragent")
+    extension = file_output.get("extension_used","xml")
 
-    args = ["nikto", "-useragent", useragent, "-h", url, "-Tuning", "2", "-o", file_output_path]
+    args = ["nikto", "-useragent", useragent, "-h", url, "-Tuning", "2", "-Format", extension, "-o", file_output_path]
     p = Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate()
     exitcode = p.returncode

@@ -34,8 +34,12 @@ class Data2Splunk(object):
                             file_data+=line
                             file_data+='\r\n'
                     sock.send(str.encode(file_data))
+                    logging.debug("file: {} sent to splunk".format(file))
+                    # todo deplace this to method
+                    os.remove(file)
             if self.delete_after:
                 self.__delete()
+                logging.debug("file {} deleted".format(file))
         except Exception as exc:
             logging.error('Error occurred while saving data to Splunk for file {}, error: {}'.format(file, exc))
             raise

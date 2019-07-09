@@ -26,17 +26,18 @@ RUN echo "$(which python3)"
 RUN echo "$(which git)"
 RUN echo "$(which nikto.pl)"
 
+# edit nikto.conf for correct DTD path
+RUN sed -i 's/NIKTODTD=docs\/nikto.dtd.*/NIKTODTD=\/usr\/src\/Nikto2\/program\/docs\/nikto.dtd/g' /usr/src/Nikto2/program/nikto.conf.default
+
 RUN mkdir -p /code/tmp
+RUN mkdir -p /code/webtentacle
+
+COPY requirements.txt /code/requirements.txt
+ADD webtentacle /code/webtentacle
+
 WORKDIR /code
-COPY . .
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-#RUN pip3 install --no-cache-dir -r requirements.txt
-RUN pip3 install -r requirements.txt
-
-# start CRON (for testing purpose every 5 minutes)
-#RUN echo '5 * * * * cd /code && python3 ./main.py' > /etc/crontabs/root
-#CMD ['crond','-l 2','-f']
-#RUN touch /var/log/cron.log
-RUN chmod +x ./launcher.sh
-RUN chmod +x ./entry.sh
-ENTRYPOINT ["./entry.sh"]
+RUN chmod +x webtentacle/launcher.sh
+RUN chmod +x webtentacle/entry.sh
+ENTRYPOINT ["webtentacle/entry.sh"]

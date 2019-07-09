@@ -44,7 +44,7 @@ class Xml2Json(object):
             if len(data) < 1:
                 logging.error('the xml output file is empty for scanned {} and file {}'.format(self.url, path.basename(self.file)))
                 raise ValueError('Error in sanitizing xml file result') 
-            # convvert to xml
+            # convert to xml
             # send it back to xml
             parse2file = "{}/{}".format(self.dir, self.xmloutput_file) if self.xmloutput_file is not None else self.file
             with open(parse2file, 'w') as fp:
@@ -60,6 +60,10 @@ class Xml2Json(object):
             # replace xml extension to json
             pre, ext = path.splitext(self.file)
             json_file = pre + '.json'
+            # todo take it away and make function
+            old_file = self.file
+            os.remove(old_file)
+            logging.debug("deleted {} file".format(old_file))
             
             with open(json_file, 'w') as f:
                 json.dump(doc, f)

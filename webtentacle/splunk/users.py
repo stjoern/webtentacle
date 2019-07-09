@@ -13,7 +13,11 @@ class Users(object):
         usernames = map(lambda x: x.name, self.get_users()) 
         if username not in usernames:
             user = initialize.splunk_service.users.create(username=username, password=password, roles=roles) 
+            logging.info("New user {} created".format(username))
             return user
+        else:
+            logging.debug("User {} already created.".format(username))
+            return
         
     #@TODO
     # delete_user

@@ -8,8 +8,8 @@ services:
   web:
     build: .
     environment: 
-      - SPLUNK_WEBTENTACLE_PASSWORD=${SPLUNK_PASSWORD}
-      - SPLUNK_WEBTENTACLE_USER=${SPLUNK_USERNAME}
+      - SPLUNK_WEBTENTACLE_PASSWORD=${SPLUNK_WEBTENTACLE_PASSWORD}
+      - SPLUNK_WEBTENTACLE_USERNAME=${SPLUNK_WEBTENTACLE_USERNAME}
       - MOTHER_HOSTNAME=${MOTHER_HOSTNAME}
       - SPLUNK_INITIAL_PASSWORD=${SPLUNK_INITIAL_PASSWORD}
     links:
@@ -26,6 +26,7 @@ services:
       - SPLUNK_UPGRADE=True
       - SPLUNK_PASSWORD=${SPLUNK_INITIAL_PASSWORD}
       - DEBUG=1
+      - USER=root
     volumes:
       - opt-splunk-etc:/opt/splunk/etc
       - opt-splunk-var:/opt/splunk/var

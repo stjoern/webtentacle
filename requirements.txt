@@ -2,3 +2,7 @@ pyyaml
 splunklib
 splunk-sdk
 xmltodict
+dbus-python
+pycryptodome
+keyrings.cryptfile
+keyring

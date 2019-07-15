@@ -1,5 +1,4 @@
 webapps:
-  - 10.0.2.8
 
 splunk:
   host: localhost

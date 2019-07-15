@@ -35,11 +35,6 @@ class Data2Splunk(object):
                             file_data+='\r\n'
                     sock.send(str.encode(file_data))
                     logging.debug("file: {} sent to splunk".format(file))
-                    # todo deplace this to method
-                    os.remove(file)
-            if self.delete_after:
-                self.__delete()
-                logging.debug("file {} deleted".format(file))
         except Exception as exc:
             logging.error('Error occurred while saving data to Splunk for file {}, error: {}'.format(file, exc))
             raise
@@ -48,7 +43,11 @@ class Data2Splunk(object):
         for item in glob.glob("{}/*.{}".format(directory, extension)):
             self.__file = item
             self.single(item)
-        
+            #!todo put it somewhere else
+            for item in os.listdir(directory):
+                if item.endswith(".xml") or item.endswith(".json"):
+                    os.remove.path.join(directory,item)
+            
       
     def __delete(self):
         remove = lambda f: os.remove(f)

@@ -60,14 +60,9 @@ class Xml2Json(object):
             # replace xml extension to json
             pre, ext = path.splitext(self.file)
             json_file = pre + '.json'
-            # todo take it away and make function
-            old_file = self.file
-            os.remove(old_file)
-            logging.debug("deleted {} file".format(old_file))
             
             with open(json_file, 'w') as f:
                 json.dump(doc, f)
-            self.file_result = json_file
         else:
             logging.error("the file {} doesn't exist.".format(self.file))
             raise ValueError('No result file for {}'.format(self.url))

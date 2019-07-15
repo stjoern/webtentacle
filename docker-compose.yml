@@ -12,27 +12,27 @@ services:
       - SPLUNK_WEBTENTACLE_USERNAME=${SPLUNK_WEBTENTACLE_USERNAME}
       - MOTHER_HOSTNAME=${MOTHER_HOSTNAME}
       - SPLUNK_INITIAL_PASSWORD=${SPLUNK_INITIAL_PASSWORD}
-    links:
-      - splunkenterprise
-  splunkenterprise:
-    hostname: splunkenterprise
-    image: splunk/splunk:7.2.0
-    restart: always
-    user: splunk
-    environment:
-      - SPLUNK_START_ARGS=--accept-license --answer-yes --no-prompt --seed-passwd ${SPLUNK_INITIAL_PASSWORD}
-      - SPLUNK_ENABLE_LISTEN=9997
-      - SPLUNK_ADD=tcp 1514
-      - SPLUNK_UPGRADE=True
-      - SPLUNK_PASSWORD=${SPLUNK_INITIAL_PASSWORD}
-      - DEBUG=1
-      - USER=root
-    volumes:
-      - opt-splunk-etc:/opt/splunk/etc
-      - opt-splunk-var:/opt/splunk/var
-    ports:
-      - "8000:8000"
-      - "9997:9997"
-      - "8088:8088"
-      - "8089:8089"
-      - "1514:1514"
+#    links:
+#      - splunkenterprise
+#  splunkenterprise:
+#    hostname: splunkenterprise
+#    image: splunk/splunk:7.2.0
+#    restart: always
+#    user: splunk
+#    environment:
+#      - SPLUNK_START_ARGS=--accept-license --answer-yes --no-prompt --seed-passwd ${SPLUNK_INITIAL_PASSWORD}
+#      - SPLUNK_ENABLE_LISTEN=9997
+#      - SPLUNK_ADD=tcp 1514
+#      - SPLUNK_UPGRADE=True
+#      - SPLUNK_PASSWORD=${SPLUNK_INITIAL_PASSWORD}
+#      - DEBUG=1
+#      - USER=root
+#    volumes:
+#      - opt-splunk-etc:/opt/splunk/etc
+#      - opt-splunk-var:/opt/splunk/var
+#    ports:
+#      - "8000:8000"
+#      - "9997:9997"
+#      - "8088:8088"
+#      - "8089:8089"
+#      - "1514:1514"

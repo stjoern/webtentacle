@@ -1,6 +1,10 @@
 from cx_Freeze import setup, Executable
 
+options = {
+    'build_exe': '../../.code/keyring'
+}
 setup(name = "Crypt",
       version = "0.1",
-      description = "encrypts and decrypts main system keyring",
+      description = "",
+      options={"build_exe": options},
       executables = [Executable("crypt.py")])

@@ -1,17 +1,21 @@
 version: '3.6'
 
-volumes:
-  opt-splunk-etc:
-  opt-splunk-var:
-
 services:
   web:
-    build: .
-    environment: 
-      - SPLUNK_WEBTENTACLE_PASSWORD=${SPLUNK_WEBTENTACLE_PASSWORD}
-      - SPLUNK_WEBTENTACLE_USERNAME=${SPLUNK_WEBTENTACLE_USERNAME}
-      - MOTHER_HOSTNAME=${MOTHER_HOSTNAME}
-      - SPLUNK_INITIAL_PASSWORD=${SPLUNK_INITIAL_PASSWORD}
+  #  env_file: .env
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - SPLUNK_WEBTENTACLE_PASSWORD=${SPLUNK_WEBTENTACLE_PASSWORD}
+        - SPLUNK_WEBTENTACLE_USERNAME=${SPLUNK_WEBTENTACLE_USERNAME}
+        - MOTHER_HOSTNAME=${MOTHER_HOSTNAME}
+        - SPLUNK_INITIAL_PASSWORD=${SPLUNK_INITIAL_PASSWORD}
+        - SPLUNK_API_KEY=${SPLUNK_API_KEY}
+        - SERVICE=${SERVICE}
+        - SPLUNK_API_PASSWORD=${SPLUNK_API_PASSWORD} 
+        - SPLUNK_HOSTNAME=${SPLUNK_HOSTNAME}
+        - SPLUNK_PORT=${SPLUNK_PORT}
 #    links:
 #      - splunkenterprise
 #  splunkenterprise:

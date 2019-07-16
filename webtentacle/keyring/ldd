@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# fix alpine docker, this replaces "ldd" with the package so that pyinstaller can find the lib
+exec /usr/bin/ldd "$@" | \
+    sed -r 's/([^[:space:]]+) => ldd/\1 => \/lib\/\1/g' | \
+    sed -r 's/ldd \(.*\)//g'

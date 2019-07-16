@@ -1,8 +1,9 @@
 webapps:
 
 splunk:
-  host: localhost
-  port: 8089
+  host: <?>
+  port: <?>
+  key_name: <?>
 
 mail:
   port: 465

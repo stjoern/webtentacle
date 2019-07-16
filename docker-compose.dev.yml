@@ -1,0 +1,13 @@
+version: '3.6'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - SPLUNK_API_KEY=${SPLUNK_API_KEY}
+        - SERVICE=${SERVICE}
+        - SPLUNK_API_PASSWORD=${SPLUNK_API_PASSWORD} 
+        - SPLUNK_HOSTNAME=${SPLUNK_HOSTNAME}
+        - SPLUNK_PORT=${SPLUNK_PORT}

@@ -4,9 +4,6 @@ from keyrings.cryptfile.cryptfile import CryptFileKeyring
 import os
 
 
-#kr = CryptFileKeyring()
-#kr.keyring_key=mother
-
 class Crypt(object):
     
     def __init__(self):

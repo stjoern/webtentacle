@@ -2,6 +2,8 @@ import yaml
 import logging
 from webtentacle.common.helper import get_nested
 
+logger = logging.getLogger('webtentacle-config')
+
 class SingletonMetaClass(type):
     def __init__(cls, name, bases, dict):
         super(SingletonMetaClass, cls).__init__(name, bases, dict)
@@ -26,30 +28,7 @@ class LoadConfig(object):
             try:
                 return yaml.safe_load(stream)
             except yaml.YAMLError as exc:
-                print(exc)
-
-    def get_urls(self):
-        return self.settings.get('webapps',[])
-
-    def get_nikto(self):
-        return self.settings.get('nikto',{})
-    
-    def url_generator(self):
-        for url in self.settings.get('webapps',[]):
-            yield url
-
-    def get_file_output(self):
-        return self.settings.get("files_output",None)
-    
-    def set_logging(self):
-        log = self.settings.get("logging")
-        logging.basicConfig(filename="{}/{}".format(log.get("folder"), log.get("file")), 
-                            filemode='w+', 
-                            format='%(process)d-%(asctime)s-%(name)s-%(levelname)s-%(message)s', 
-                            level=eval("logging.{}".format((log.get("mode")).upper())))
-        
-    def get_splunk(self):
-        return self.settings.get("splunk")
+                logger.debug("problem redading config.ymll, {}".format(str(exc)))
     
     def get(self, *args):
         return get_nested(self.settings, *args)

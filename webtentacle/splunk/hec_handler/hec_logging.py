@@ -15,6 +15,7 @@ LEVEL='DEBUG'
 RETRY_COUNT=5
 FLUSH=15
 DEBUG=False
+LOG_FILE=None
 
 
 
@@ -31,6 +32,8 @@ try:
     SPLUNK_TOKEN=str(SPLUNK_TOKEN, 'utf-8')
     if p.returncode != 0:
         raise ValueError("Problem with decrypting the Splunk API key")
+    
+    LOG_FILE = os.path.join(config.get('logging','folder'), config.get('logging','file'))
     
     try:
         SPLUNK_HOST = config.get('splunk', 'host')
@@ -53,10 +56,11 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'json': {
-            '()': 'json_log_formatter.JSONFormatter',
-        
-         #   '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
-         #   'format': '%(asctime)s %(created)f %(exc_info)s %(filename)s %(funcName)s %(levelname)s %(levelno)s %(lineno)d %(module)s %(message)s %(pathname)s %(process)s %(processName)s %(relativeCreated)d %(thread)s %(threadName)s'
+            "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+            "format": "%(asctime)s %(levelname)s %(filename)s %(lineno)s %(message)s"
+        },
+        'standard': {
+            "format": "%(levelname)s <PID %(process)d:%(processName)s> %(name)s.%(funcName)s(): %(message)s"
         }
     },
     'handlers': {
@@ -77,11 +81,20 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
+        },
+        'debug_file_handler': {
+            'level': DEBUG,
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'filename': LOG_FILE,
+            'maxBytes': 10485760, # 10MB
+            'backupCount': 20,
+            'encoding': 'utf8'
         }
     },
     'loggers': {
         '': {
-            'handlers': ['console', 'splunk'],
+            'handlers': ['console', 'splunk','debug_file_handler'],
             'level': 'DEBUG'
         }
     }

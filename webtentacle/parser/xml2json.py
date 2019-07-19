@@ -9,11 +9,11 @@ import os
 logger = logging.getLogger('webtentacle')
     
 class Xml2Json(object):
-    def __init__(self, filepath, url, xmloutput=None):
+    def __init__(self, filepath, url, xmloutput):
         self.file = path.abspath(filepath)
         self.file_result = None
         self.url = url
-        self.xmloutput_file = xmloutput
+        self.xmloutput = xmloutput
         self.dir = Xml2Json.get_absolute_path_dir(filepath)
         self.__file = None
     
@@ -46,18 +46,18 @@ class Xml2Json(object):
                 raise ValueError('Error in sanitizing xml file result') 
             # convert to xml
             # send it back to xml
-            with open(self.xmloutput_file, 'w') as fp:
+            with open(self.xmloutput, 'w') as fp:
                 for row in data:
                     fp.write("{}\n".format(row))
             try:
-                with open(self.xmloutput_file) as fd:
+                with open(self.xmloutput) as fd:
                     doc = xmltodict.parse(fd.read())
                     if doc:
                         logger.info(self.url, extra=doc)
                     else:
                         raise ValueError("No parsed data {}".format("todo IP"))
             except Exception as error:
-                logging.error('sanitize_xml: {}'.format(error)) 
+                logging.debug('Problem in sanitizing xml: {}'.format(error)) 
                 raise          # not to loose stack
             # write back to json file
             # replace xml extension to json
@@ -67,8 +67,8 @@ class Xml2Json(object):
             with open(json_file, 'w') as f:
                 json.dump(doc, f)
         else:
-            logging.error("the file {} doesn't exist.".format(self.file))
-            raise ValueError('No result file for {}'.format(self.url))
+            logging.debug("Cannot parse scanning result, the file {file} doesn't exist for {url}".format(file=self.file, url=self.url))
+            raise ValueError('Cannot parse scanning result for {url}'.format(self.url))
         
 
         

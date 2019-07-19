@@ -11,7 +11,7 @@ splunk:
   protocol: http
   verify: False
   flush: 0
-  level: DEBUG
+  level: INFO
   retry_count: 5
 
 mail:
@@ -35,7 +35,7 @@ files_output:
 
 logging:
   folder: "/code/tmp"
-  file: webtentacle.log
+  file: webtentacle-debug.log
   mode: debug
 
 nikto:

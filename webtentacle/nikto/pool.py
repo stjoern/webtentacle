@@ -59,6 +59,6 @@ def concurrent_pool(urls, file_output, nikto):
             if rv == 0:
                 logging.debug('finished "{}"'.format(fn))
             elif rv < 0:
-                logging.warning('problem with file "{}"'.format(fn))
+                logging.debug('problem with file "{}"'.format(fn))
             else:
-                logging.error(errmsg.format(fn, rv))
+                logging.debug(errmsg.format(fn, rv))

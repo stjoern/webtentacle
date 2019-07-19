@@ -28,12 +28,11 @@ curl -k -X "POST" -u admin:$INITIAL_PASSWORD https://$SPLUNK_HOSTNAME:8089/servi
 echo "HTTP event Collector is now enabled."
 
 echo "Building webtentacle docker"
-docker-compose build -f ./docker-compose.dev.yml \
-    --force-rm \
+docker-compose -f ./docker-compose.dev.yml build \
     --build-arg SPLUNK_API_KEY=$SPLUNK_API_KEY \
     --build-arg SERVICE=webtentacle \
     --build-arg SPLUNK_API_PASSWORD=$SPLUNK_API_PASSWORD \
     --build-arg SPLUNK_HOSTNAME=$SPLUNK_HOSTNAME \
-    --build-arg SPLUNK_PORT=$SPLUNK_PORT \
+    --build-arg SPLUNK_PORT=$SPLUNK_PORT
     
 docker-compose up -d

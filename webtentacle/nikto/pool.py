@@ -11,6 +11,8 @@ from functools import partial
 import logging
 import sys
 
+logger = logging.getLogger('webtentacle')
+
 def run_nikto(file_output, nikto, ref_url):
     """
     use nikto to start testing web headers
@@ -27,17 +29,16 @@ def run_nikto(file_output, nikto, ref_url):
             ref_url = 'http://' + ref_url
         parsed = urlsplit(ref_url)
         host = parsed.netloc
-        template = eval(file_output.get('template',''))
+        template = eval(file_output.get('template','Template("$url-$timestamp")'))
         ts = datetime.now().timestamp()
         substituted = template.substitute(url=host, timestamp=datetime.utcfromtimestamp(ts).strftime('%Y%m%d_%H:%M:%S'))
         substituted += '.{}'.format(extension)
         return substituted, ref_url
 
     extension = file_output.get("extension_used","xml")
-    logging.debug("extension {} used for nikto".format(extension))
     file_name, url = get_file_output(ref_url, file_output, nikto, extension)
     file_output_path = '{}/{}'.format(file_output.get('folder','/tmp'), file_name)
-    useragent = nikto.get("useragent")
+    useragent = nikto.get("useragent","webtentacle")
     
 
     args = ["nikto", "-useragent", useragent, "-h", url, "-Tuning", "2", "-Format", extension, "-o", file_output_path]
@@ -45,7 +46,7 @@ def run_nikto(file_output, nikto, ref_url):
     p = Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate()
     exitcode = p.returncode
-    print(output)
+    logger.debug(output)
     return err, exitcode
 
 def concurrent_pool(urls, file_output, nikto):
@@ -56,7 +57,7 @@ def concurrent_pool(urls, file_output, nikto):
         for fut in concurrent.futures.as_completed(fs, timeout=None):
             fn, rv = fut.result()
             if rv == 0:
-                logging.info('finished "{}"'.format(fn))
+                logging.debug('finished "{}"'.format(fn))
             elif rv < 0:
                 logging.warning('problem with file "{}"'.format(fn))
             else:

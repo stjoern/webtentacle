@@ -1,5 +1,6 @@
 import yaml
 import logging
+from webtentacle.common.helper import get_nested
 
 class SingletonMetaClass(type):
     def __init__(cls, name, bases, dict):
@@ -49,3 +50,8 @@ class LoadConfig(object):
         
     def get_splunk(self):
         return self.settings.get("splunk")
+    
+    def get(self, *args):
+        return get_nested(self.settings, *args)
+    
+config = LoadConfig('webtentacle/config.yml')

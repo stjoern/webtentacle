@@ -35,7 +35,7 @@ The most commonly used decrypt commands are:
             args = parser.parse_args(sys.argv[2:])
            
             # invoke the keyring
-            print(self.kr.get_password(self.mother_service, args.username))
+            print(self.kr.get_password(self.mother_service, args.username), end='')
         except Exception as msg:
             print("Error in keyring decryption, {}".format(str(msg)))
             sys.exit(2)

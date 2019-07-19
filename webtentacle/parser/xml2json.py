@@ -6,6 +6,8 @@ import pickle
 import glob
 import os
 
+logger = logging.getLogger('webtentacle')
+    
 class Xml2Json(object):
     def __init__(self, filepath, url, xmloutput=None):
         self.file = path.abspath(filepath)
@@ -24,9 +26,7 @@ class Xml2Json(object):
     def file_exist(filepath):
         return True if path.exists(filepath) else False
 
-    
-    #@TODO: split sanitize and file writer
-    
+
     def sanitize_xml(self):
         if Xml2Json.file_exist(self.file):
             data = None
@@ -38,21 +38,24 @@ class Xml2Json(object):
             # delete first two lines
             del data[0:1+1]
             # replace now the new first line with one root <webtentacle>
-            data[0] = '<event>\n'
+            data[0] = '<scan>\n'
             # replace the last line with end tag root </webtentacle>
-            data[-1] = '</event>'
+            data[-1] = '</scan>'
             if len(data) < 1:
                 logging.error('the xml output file is empty for scanned {} and file {}'.format(self.url, path.basename(self.file)))
                 raise ValueError('Error in sanitizing xml file result') 
             # convert to xml
             # send it back to xml
-            parse2file = "{}/{}".format(self.dir, self.xmloutput_file) if self.xmloutput_file is not None else self.file
-            with open(parse2file, 'w') as fp:
+            with open(self.xmloutput_file, 'w') as fp:
                 for row in data:
                     fp.write("{}\n".format(row))
             try:
-                with open(parse2file) as fd:
+                with open(self.xmloutput_file) as fd:
                     doc = xmltodict.parse(fd.read())
+                    if doc:
+                        logger.info(self.url, extra=doc)
+                    else:
+                        raise ValueError("No parsed data {}".format("todo IP"))
             except Exception as error:
                 logging.error('sanitize_xml: {}'.format(error)) 
                 raise          # not to loose stack

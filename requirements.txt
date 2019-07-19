@@ -6,3 +6,5 @@ dbus-python
 pycryptodome
 keyrings.cryptfile
 keyring
+splunk_handler
+python-json-logger

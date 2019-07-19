@@ -1,9 +1,18 @@
 webapps:
+  - 10.0.99.3
+  - 10.0.99.4
 
 splunk:
-  host: <?>
-  port: <?>
-  key_name: <?>
+  host: localhost
+  port: 8088
+  key_name: mysplunkkey
+  index: main
+  debug: False
+  protocol: http
+  verify: False
+  flush: 0
+  level: DEBUG
+  retry_count: 5
 
 mail:
   port: 465
@@ -17,6 +26,7 @@ mail:
   
 files_output:
   folder: "/code/tmp"
+  sanitized: "/code/tmp/sanitized"
   template: Template('$url-$timestamp')
   extensions: 
     - txt

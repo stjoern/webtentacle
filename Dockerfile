@@ -1,5 +1,15 @@
 FROM alpine:3.7
 
+
+ARG SPLUNK_INITIAL_PASSWORD
+ARG SERVICE
+ARG SPLUNK_API_KEY 
+ARG SPLUNK_API_PASSWORD
+ARG SPLUNK_HOSTNAME
+ARG SPLUNK_PORT
+RUN echo "$SPLUNK_HOSTNAME:$SPLUNK_API_KEY:$SPLUNK_API_PASSWORD"
+
+
 RUN mkdir -p /usr/src/perl
 WORKDIR /usr/src/perl
 
@@ -30,7 +40,7 @@ RUN echo "$(which nikto.pl)"
 # edit nikto.conf for correct DTD path
 RUN sed -i 's/NIKTODTD=docs\/nikto.dtd.*/NIKTODTD=\/usr\/src\/Nikto2\/program\/docs\/nikto.dtd/g' /usr/src/Nikto2/program/nikto.conf.default
 
-RUN mkdir -p /code/tmp
+RUN mkdir -p /code/tmp/sanitized
 RUN mkdir -p /code/webtentacle
 
 COPY requirements.txt /code/requirements.txt
@@ -46,13 +56,6 @@ RUN pip3 uninstall pycryptodome -y
 RUN pip3 install pycryptodome
 
 RUN pip3 install cx_Freeze
-
-ARG SPLUNK_INITIAL_PASSWORD
-ARG SERVICE
-ARG SPLUNK_API_KEY 
-ARG SPLUNK_API_PASSWORD
-ARG SPLUNK_HOSTNAME
-ARG SPLUNK_PORT
 
 # replace config.yml for splunk configuration
 RUN sed -i "s|host: <?>|host: ${SPLUNK_HOSTNAME}|" /code/webtentacle/config.yml

@@ -4,59 +4,43 @@ from webtentacle.nikto import pool
 import os
 from multiprocessing import Pool
 import logging
+import logging.config
 from webtentacle.splunk import initialize
 from webtentacle.splunk.users import Users
 from webtentacle.splunk.data2splunk import *
 from webtentacle.parser.xml2json import Xml2Json
 import socket
+from webtentacle.splunk.hec_handler.hec_logging import LOGGING
+from webtentacle.common.config import config
 
 def run():
-    settings = config.LoadConfig('webtentacle/config.yml')
-    settings.set_logging()
-    logging.debug("loaded settings: {}".format(settings.settings))
-
-    urls = settings.get_urls()
-    nikto = settings.get_nikto()
-    file_output = settings.get_file_output()
-    pool.concurrent_pool(urls, file_output, nikto)
-    print("job nikto finished")
     
-    #create user
+    
+    logging.config.dictConfig(LOGGING)
+    logger = logging.getLogger('webtentacle')
+    '''
     try:
-        splunk_conf = settings.get_splunk()
-        initialize.init(host=os.getenv('MOTHER_HOSTNAME'),
-                        port=int(splunk_conf.get('port')),
-                        username='admin',
-                        password=os.getenv('SPLUNK_INITIAL_PASSWORD'),
-                        cookie=0)
-        logging.info("Authenticated to splunk instance running on: {}".format(os.getenv('MOTHER_HOSTNAME')))
-        user = Users()
-        user.create_user(username=os.getenv('SPLUNK_WEBTENTACLE_USERNAME'),
-                        password=os.getenv('SPLUNK_WEBTENTACLE_PASSWORD'),
-                        roles=['power','user','admin'])
-       
-        initialize.splunk_service.logout()
-        initialize.init(host=os.getenv('MOTHER_HOSTNAME'),
-                        port=int(splunk_conf.get('port')),
-                        username=os.getenv('SPLUNK_WEBTENTACLE_USERNAME'),
-                        password=os.getenv('SPLUNK_WEBTENTACLE_PASSWORD'),
-                        cookie=0)
-        logging.info("User {} authenticated to splunk".format(os.getenv('SPLUNK_WEBTENTACLE_USERNAME')))
-        # user authenticated
-        print("job webtentacle user authenticated")
+        urls = config.get('webapps')
+        file_output = config.get('files_output')
+        nikto = config.get('nikto')
+        pool.concurrent_pool(urls, file_output, nikto)
+    except Exception as exc:
+        logging.error(str(exc))
         
-        for item in glob.glob("{}/*.{}".format(file_output.get('folder'), file_output.get('extension_used'))):
-            print("parsing file: ".format(item))
-            logging.debug("Parsing file: {}".format(item))
+    logger.debug('job Scanning -> finished')
+    '''
+    try:
+        reg_exp = os.path.join(config.get('files_output','folder'),'*.{}'.format(config.get('files_output','extension_used')))
+        for item in glob.glob(reg_exp):
             base = os.path.basename(item)
-            fileoutput, file_extension = os.path.splitext(base)
-            xmloutput = '{}{}{}'.format(fileoutput,'-sanitized',file_extension)
-            xmlparser = Xml2Json(filepath=item, url="todo", xmloutput=xmloutput)
+            to_be_sanitized_to = os.path.join(config.get('files_output','sanitized'), base)
+            parsed_url = base.split('-')[0] or 'FQDN'
+            xmlparser = Xml2Json(filepath=item, url=parsed_url, xmloutput=to_be_sanitized_to)
             xmlparser.sanitize_xml()
             
-        dump = Data2Splunk(host=socket.gethostname(), source='webtentacle', sourcetype="_json", backup=0, delete_after=1)
-        dump.bulk(directory=file_output.get("folder"), extension='json')
-        logging.info("job splunk 'dumping data' finished")
+        #dump = Data2Splunk(host=socket.gethostname(), source='webtentacle', sourcetype="_json", backup=0, delete_after=1)
+        #dump.bulk(directory=file_output.get("folder"), extension='json')
+        #logging.info("job splunk 'dumping data' finished")
         print("job splunk dumping data finished")
     except Exception as exc:
         logging.error("Error occurred, error: {}".format(str(exc)))

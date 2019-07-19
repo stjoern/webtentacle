@@ -8,11 +8,11 @@ SPLUNK_HOSTNAME=localhost
 SPLUNK_API_PASSWORD=none
 INITIAL_PASSWORD=changemeagain
 SPLUNK_PORT=8088
-docker run  -p 8000:8000 -p 8888:8888 -p 8089:8089 -p 8088:8088 -d \
-            -e "SPLUNK_START_ARGS=--accept-license --answer-yes --no-prompt --seed-passwd $INITIAL_PASSWORD" \
-            -e "SPLUNK_PASSWORD=$INITIAL_PASSWORD" \
-            -e "SPLUNK_USER=root" splunk/splunk
-sleep 20
+docker run -p 8000:8000 -p 9997:9997 -p 8088:8088 -p 8089:8089 -p 1514:1514 -d \
+           -e "SPLUNK_START_ARGS=--accept-license --answer-yes --no-prompt --seed-passwd $INITIAL_PASSWORD" \
+           -e "SPLUNK_PASSWORD=$INITIAL_PASSWORD" -e "SPLUNK_USER=root" splunk/splunk
+
+sleep 30
 SPLUNK_API_PASSWORD=`curl -k -u admin:$INITIAL_PASSWORD https://$SPLUNK_HOSTNAME:8089/servicesNS/admin/splunk_httpinput/data/inputs/http \
  -d name=$SPLUNK_API_KEY  | grep -oP '(?<=<s:key name="token">).*?(?=</s:key>)'`
 
@@ -21,12 +21,14 @@ echo "Your token is: $SPLUNK_API_PASSWORD"
 sleep 5
 curl -k -u admin:$INITIAL_PASSWORD https://$SPLUNK_HOSTNAME:8089/servicesNS/admin/splunk_httpinput/data/inputs/http/$SPLUNK_API_KEY -d description="For testing purposes" > /dev/null 2>&1
 echo "Description for your token changed to be only 'for testing purposes'."
+curl -k -X "POST" -u admin:$INITIAL_PASSWORD https://$SPLUNK_HOSTNAME:8089/servicesNS/admin/splunk_httpinput/data/inputs/http/http/enable
 sleep 5
 curl -k -X "POST" -u admin:$INITIAL_PASSWORD https://$SPLUNK_HOSTNAME:8089/servicesNS/admin/splunk_httpinput/data/inputs/http/$SPLUNK_API_KEY/enable > /dev/null 2>&1
 echo "Your token $SPLUNK_API_KEY is enabled now"
-curl -k -X "POST" -u admin:$INITIAL_PASSWORD https://$SPLUNK_HOSTNAME:8089/servicesNS/admin/splunk_httpinput/data/inputs/http/http/enable
-echo "HTTP event Collector is now enabled."
+curl -k -X "POST" -u admin:$INITIAL_PASSWORD https://$SPLUNK_HOSTNAME:8089/servicesNS/admin/splunk_httpinput/data/inputs/http/http -d enableSSL='0'
+echo "HTTP event Collector is now enabled and without SSL"
 
+exit
 echo "Building webtentacle docker"
 docker-compose -f ./docker-compose.dev.yml build \
     --build-arg SPLUNK_API_KEY=$SPLUNK_API_KEY \

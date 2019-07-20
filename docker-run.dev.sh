@@ -107,7 +107,7 @@ function showLoading() {
 function getBridgeHostnameForSplunkInDocker()
 {
     local __resulutvar=$1
-    local IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | head -n1`
+    local IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' splunk`
     echo -e \
         "checking your bridge IP ........ $IP"
     eval $__resulutvar="'$IP'"
@@ -180,7 +180,11 @@ function buildWebtentacle
 
 function runWebtentacle
 {
-    docker run -d --name mywebtentacle -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro -it webtentacle:$VERSION 2>/dev/null
+    if [ $MACHINE == "Linux" ] ; then
+        docker run -d --name mywebtentacle -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro -it webtentacle:$VERSION 2>/dev/null
+    else
+        docker run -d --name mywebtentacle -it webtentacle:$VERSION 2>/dev/null
+    fi
     echo -e "running mywebtentacle ..................... ${green}ok${reset}"
 }
 
@@ -193,11 +197,11 @@ MACHINE=$(getOS)
 checkCompatibility $MACHINE
 checkDockerRunning
 stopContainers & showLoading "stopping containers"
-getBridgeHostnameForSplunkInDocker SPLUNK_HOSTNAME
 startSplunk && showLoading "starting splunk    "
 createToken
 enableToken && showLoading "enabling token     "
 disableSSL && showLoading "disabling SSL      "
+getBridgeHostnameForSplunkInDocker SPLUNK_HOSTNAME
 buildWebtentacle && showLoading "building webtentacle image    "
 runWebtentacle 
 epilogue

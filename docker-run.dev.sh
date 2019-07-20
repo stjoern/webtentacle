@@ -117,7 +117,7 @@ function startSplunk
 {
     docker run --name splunk -p 8000:8000 -p 9997:9997 -p 8088:8088 -p 8089:8089 -p 1514:1514 -d \
            -e "SPLUNK_START_ARGS=--accept-license --answer-yes --no-prompt --seed-passwd $INITIAL_PASSWORD" \
-           -e "SPLUNK_PASSWORD=$INITIAL_PASSWORD" -e "SPLUNK_USER=root" splunk/splunk &>/dev/null
+           -e "SPLUNK_PASSWORD=$INITIAL_PASSWORD" -e "SPLUNK_USER=root" splunk/splunk
 }
 
 function createToken

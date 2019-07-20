@@ -1,4 +1,4 @@
-#! /usr/bin/bash
+#! /usr/bin/env bash
 #set -x #echo on
 echo "Stopping splunk/splunk container if it is running."
 

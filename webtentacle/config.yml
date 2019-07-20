@@ -8,21 +8,11 @@ splunk:
   key_name: <?>
   index: main
   debug: False
-  protocol: http
-  verify: False
+  protocol: <?>
+  verify: <?>
   flush: 0
   level: INFO
   retry_count: 5
-
-mail:
-  port: 465
-  smtp_server: smtp.gmail.com
-  sender_email: webtentacle@gmail.com
-  message: >-
-    This message is sent from automation tool WeBTenTacLE.
-    Please do not answer to this email. 
-    To unsubscribe/subscripte contact security team.
-  subject: webtentacle notifier
   
 files_output:
   folder: "/code/tmp"

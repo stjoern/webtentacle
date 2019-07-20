@@ -8,6 +8,8 @@ ARG SPLUNK_API_KEY
 ARG SPLUNK_API_PASSWORD
 ARG SPLUNK_HOSTNAME
 ARG SPLUNK_PORT
+ARG PROTOCOL=https
+ARG VERIFY=True
 RUN echo "$SPLUNK_HOSTNAME:$SPLUNK_API_KEY:$SPLUNK_API_PASSWORD"
 
 
@@ -24,7 +26,10 @@ RUN apk add  --virtual .build-deps g++ python3-dev libffi-dev openssl-dev postfi
     apk add  --update python3 && \
     pip3 install --upgrade pip setuptools
 
+# synchornize time with your machine
+RUN apk add tzdata
 
+# install git
 RUN apk add git
 
 WORKDIR /usr/src
@@ -48,11 +53,9 @@ COPY requirements.txt /code/requirements.txt
 ADD webtentacle /code/webtentacle
 
 WORKDIR /code
-#RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-RUN pip3 install -r requirements.txt
-
-RUN pip3 uninstall pycrypto  -y
+#RUN pip3 uninstall pycrypto  -y
 RUN pip3 uninstall pycryptodome -y
 RUN pip3 install pycryptodome
 
@@ -62,7 +65,8 @@ RUN pip3 install cx_Freeze
 RUN sed -i "s|host: <?>|host: ${SPLUNK_HOSTNAME}|" /code/webtentacle/config.yml
 RUN sed -i "s|port: <?>|port: ${SPLUNK_PORT}|" /code/webtentacle/config.yml
 RUN sed -i "s|key_name: <?>|key_name: ${SPLUNK_API_KEY}|" /code/webtentacle/config.yml
-
+RUN sed -i "s|protocol: <?>|protocol: ${PROTOCOL}|" /code/webtentacle/config.yml
+RUN sed -i "s|verify: <?>|verify: ${VERIFY}|" /code/webtentacle/config.yml
 # build keyring
 WORKDIR /code/webtentacle/keyring
 RUN mkdir -p /code/.code

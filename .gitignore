@@ -61,4 +61,4 @@ ENV/
 # visual studio code
 *.code-workspace
 .vscode/
-.*
+.code

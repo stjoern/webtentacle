@@ -2,7 +2,6 @@ import os, sys
 from webtentacle.common.config import config
 from subprocess import Popen, PIPE
 
-import json_log_formatter
 
 SPLUNK_HOST=None
 SPLUNK_PORT=None

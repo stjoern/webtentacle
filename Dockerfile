@@ -1,6 +1,7 @@
 FROM alpine:3.7
 
-
+ARG VERSION
+LABEL version=$VERSION
 ARG SPLUNK_INITIAL_PASSWORD
 ARG SERVICE
 ARG SPLUNK_API_KEY 
@@ -76,11 +77,6 @@ WORKDIR /code/.code
 RUN pip3 uninstall cx_Freeze -y
 RUN rm -fr /code/webtentacle/keyring
 RUN keyring/crypt encrypt --username $SPLUNK_API_KEY --password $SPLUNK_API_PASSWORD
-
-
-#RUN python3 -c "from keyring import get_keyring;print(get_keyring())"
-#RUN python3 -c "import sys;from keyrings.cryptfile.cryptfile import CryptFileKeyring;kr=CryptFileKeyring();\
-#                kr.keyring_key=sys.argv[1];kr.set_password('system',sys.argv[2],sys.argv[3])" monika admin ${SPLUNK_INITIAL_PASSWORD}         
 
 WORKDIR /code
 RUN chmod +x webtentacle/launcher.sh

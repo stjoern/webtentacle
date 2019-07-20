@@ -3,9 +3,9 @@ webapps:
   - 10.0.99.4
 
 splunk:
-  host: localhost
-  port: 8088
-  key_name: mysplunkkey
+  host: <?>
+  port: <?>
+  key_name: <?>
   index: main
   debug: False
   protocol: http

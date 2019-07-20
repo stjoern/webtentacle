@@ -122,13 +122,21 @@ function startSplunk
 
 function createToken
 {
-    sleep 21 &
-    echo -en \
-    "waiting for response "
-    while ps | grep $! &>/dev/null; do
-        echo -n "."
-        sleep 2
-    done
+    if [ $MACHINE == "Linux" ] ; then
+        sleep 21 &
+        echo -en \
+        "waiting for response "
+    
+        while ps | grep $! &>/dev/null; do
+            echo -n "."
+            sleep 2
+        done
+    else
+        echo "${yellow}be patient, waiting for response, it will take 21 seconds.${reset}"
+        sleep 21
+    fi
+
+    
     echo -e "${green} ok${reset}"
     if [ $MACHINE == "Linux" ] ; then
         SPLUNK_API_PASSWORD=`curl -k -u admin:$INITIAL_PASSWORD https://$LOCAL:8089/servicesNS/admin/splunk_httpinput/data/inputs/http \
